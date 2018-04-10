@@ -1,0 +1,126 @@
+.row img{
+	margin-top: 10px;
+	vertical-align: middle;
+	width:100%;
+	}
+    
+/* screen 992px or less*/
+@media screen (min-width: 601px) and (max-width: 992px){
+	img{
+
+	}
+}
+
+header{
+	background-color: #990033;
+	padding-top:2.5vw;
+    padding-bottom:2.5vw;
+    padding-left:1vw;
+    padding-right: 1vw;
+	color:white;
+}
+
+h1{
+    font-size: 3vw;
+    display: inline;
+}
+
+/* Container holding the image and the text */
+.imageContainer {
+    position: relative;
+    text-align: left;
+    color:#990033;
+
+}
+/* Bottom left text */
+
+.bottom-left {
+    position: absolute;
+    bottom: 8px;
+    left: 16px;
+    color:white;
+    opacity: 0.5;
+    font-size: 1.6vw;
+}
+
+#topBtn {
+    display: none; /* Hidden by default */
+    position: fixed; /* Fixed/sticky position */
+    bottom: 20px; /* Place the button at the bottom of the page */
+    right: 30px; /* Place the button 30px from the right */
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #990033; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 18px; /* Increase font size */
+}
+
+#topBtn:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+}
+
+.delBtn {
+    display: none;/* Hidden by default */
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #990033; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 16px; /* Increase font size */
+}
+
+.delBtn:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+}
+
+.menuline{
+    width: 4vw;
+    height: 0.4vw;
+    background-color: white;
+    margin: 0.7vw 0;
+}
+.menu{
+    float:right;
+    display: inline;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.dropdown {
+    float: right;
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f1f1f1;
+    min-width: 160px;
+    overflow: auto;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    right: 0;
+    top: 4.5vw;
+    z-index: 1;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 1.5vw 1.5vw;
+    text-decoration: none;
+    display: block;
+}
+
+.dropdown a:hover {background-color: #ddd}
+
+.show {display:block;}
