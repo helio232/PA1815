@@ -10,19 +10,20 @@
 	<body>
 		<header>
 		<div class="head">
-		<h1>ParaMed 360</h1>
+			<h1>ParaMed 360</h1>
 
-		<div class="dropdown">
-			<div class="menu" onclick="menudropdown()">
-				<div id="myDropdown" class="dropdown-content">
-				    <a href="#home">Home</a>
-				    <a href="#deleted">Deleted Photos</a>
-				    <a href="#settings">Settings</a>
-			  	</div>
+			<div class="dropdown">
+				<div class="menu" onclick="menudropdown()">
+					<div id="myDropdown" class="dropdown-content">
+					    <a href="test.php">Home</a>
+					    <a href="deletedphoto.php">Deleted Photos</a>
+					    <a href="settings.php">Settings</a>
+				  	</div>
 
-			<div class="menuline"></div>
-			<div class="menuline"></div>
-			<div class="menuline"></div>
+				<div class="menuline"></div>
+				<div class="menuline"></div>
+				<div class="menuline"></div>
+				</div>
 			</div>
 		</div>
 
@@ -47,7 +48,7 @@
 			$photo = $photos[$i];
 			$x=($i+1);
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
-			echo '<img class="images" id="img'.$x.'"  onclick="webSocket('.$i.')" src="'.$photo.'" >';
+			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$photo.'" >';
 			echo '<div class="bottom-left">'.basename($photo).'</div>';
 			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($photo).'\')" />';
 			echo '</div>';
@@ -123,10 +124,16 @@
 		}
 
 
+
 		//WebSocket
-		var wsUri = "ws://localhost:8080/";
-		function webSocket(x){
-			var photoSrc = document.getElementsByClassName("images")[x].src;
+		var wsUri = "wss://echo.websocket.org";
+
+		function init()
+		{
+		    initialiseWebSocket();
+		}
+
+		function initialiseWebSocket(){
 			websocket = new WebSocket(wsUri);
 			websocket.onopen = function(evt){ onOpen(evt) };
 			websocket.onclose = function(evt) { onClose(evt) };
@@ -135,37 +142,38 @@
 
 		}
 
-		function opOen(evt){
-			//console.log();
+		function onOpen(evt){
+			console.log("CONNECTED");
 			//writeToScreen("CONNECTED");
-			doSend("WebSocket");
+			//doSend("WebSocket");
 		}
 
 		function onClose(evt)
 		{
+			console.log("DISCONNECTED");
 		    //writeToScreen("DISCONNECTED");
 		}
 
 		function onMessage(evt)
 		{
 		    //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-		    websocket.close();
+		    console.log("Response: " + evt.data);
+		    //websocket.close();
 		}
 
 		function onError(evt)
 		{
 		    //writeToScreen('<span style="color: red;">ERROR:</span> ' + evt.data);
+		    console.log("ERROR: " + evt.data);
 		}
 
-		function doSend(message){
-			websocket.send(message);
+		function doSend(evt){
+			var photoSrc = document.getElementsByClassName("images")[evt].src;
+			console.log("Sent: " + photoSrc);
+			websocket.send(photoSrc);
+			
 		}
+		window.addEventListener("load", init, false);
 
-
-
-/*
-Thumbnails
-WebSocket
-*/
 	</script>
 </html>
