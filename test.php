@@ -175,5 +175,33 @@
 		}
 		window.addEventListener("load", init, false);
 
+
+	//Set Interval: Refresh
+    var previous = null;
+    var current = null;
+    setInterval(function() {
+        $.getJSON("filelist.json", function(json) {
+
+        	$.ajax({
+		            url: 'listphoto.php',
+		            data: {},
+		            success: function (response) {
+		             // do something
+                    current = JSON.stringify(json);            
+                    if (previous && current && previous !== current) {
+                        console.log('refresh');
+                        location.reload();
+                    }
+                    previous = current;
+                    
+		            },
+		            error: function () {
+		             // do something
+
+		            }
+		        });
+
+        });       
+    }, 4000);  
 	</script>
 </html>

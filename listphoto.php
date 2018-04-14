@@ -26,9 +26,9 @@ $list = array(); //main array
     $data = json_encode($return_array);
     
     //output a JSON FILE
-    //file_put_contents('filelist.json', $data);
+    file_put_contents('filelist.json', $data);
     
-    echo $data;
+    //echo $data;
     
 ?>
 
