@@ -26,7 +26,6 @@
 				</div>
 			</div>
 		</div>
-
 		</header>
 
 
@@ -35,6 +34,7 @@
 		// get photo from a directory, format: jpg, gif, png
 		//$photos = glob("test photo/"."*.{jpg,gif,png}",GLOB_BRACE);
 		$photos = glob("test photo/*.jpg");
+		$thumbnails = glob("thumbnails/*.jpg");
 
 
 		//sort photo according to date modified
@@ -46,9 +46,31 @@
 		echo '<div class="row">';
 		for ($i=0; $i < count($photos); $i++){
 			$photo = $photos[$i];
+			$thumbnail = $thumbnails[$i];
+			
+			// GD library thumbnails
+			list($old_width, $old_height) = getimagesize($photo);
+			
+			//$new_width = $old_width * 0.5;
+			//$new_height = $old_height * 0.5;
+			$new_width = 900;
+			$new_height = 250;
+
+			//begin cropping x and y
+		    $crop_top = floor(($old_width - $new_width) / 2);
+		    $crop_left = floor(($old_height - $new_height) / 2);
+			$new_image = imagecreatetruecolor($new_width, $new_height);
+			$old_image = imagecreatefromjpeg($photo);
+
+			imagecopy($new_image,$old_image,0,0,$crop_top,$crop_left,$old_width,$old_height);
+			imagejpeg($new_image, 'thumbnails/'.basename($photo),100);
+			imagedestroy($old_image);
+			imagedestroy($new_image);
+			
 			$x=($i+1);
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
-			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$photo.'" >';
+			//echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$photo.'" >';
+			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$thumbnail.'" >';
 			echo '<div class="bottom-left">'.basename($photo).'</div>';
 			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($photo).'\')" />';
 			echo '</div>';
@@ -91,7 +113,8 @@
 		        $.ajax({
 		          url: 'delete.php',
 		          data: {'sourcefile' : "<?php echo dirname(__FILE__) . '/test photo/'?>" + file_name  ,
-		          		 'newfile': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name 
+		          		 'newfile': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name ,
+		          		 'thumbnail':  "<?php echo dirname(__FILE__) . '/thumbnails/'?>" + file_name
 		          		},
 		          success: function (response) {
 		             // do something
@@ -176,32 +199,32 @@
 		window.addEventListener("load", init, false);
 
 
-	//Set Interval: Refresh
-    var previous = null;
-    var current = null;
-    setInterval(function() {
-        $.getJSON("filelist.json", function(json) {
+		//Set Interval: Refresh
+	    var previous = null;
+	    var current = null;
+	    setInterval(function() {
+	        $.getJSON("filelist.json", function(json) {
 
-        	$.ajax({
-		            url: 'listphoto.php',
-		            data: {},
-		            success: function (response) {
-		             // do something
-                    current = JSON.stringify(json);            
-                    if (previous && current && previous !== current) {
-                        console.log('refresh');
-                        location.reload();
-                    }
-                    previous = current;
-                    
-		            },
-		            error: function () {
-		             // do something
+	        	$.ajax({
+			            url: 'listphoto.php',
+			            data: {},
+			            success: function (response) {
+			             // do something
+	                    current = JSON.stringify(json);            
+	                    if (previous && current && previous !== current) {
+	                        console.log('refresh');
+	                        location.reload();
+	                    }
+	                    previous = current;
+	                    
+			            },
+			            error: function () {
+			             // do something
 
-		            }
-		        });
+			            }
+			        });
 
-        });       
-    }, 4000);  
+	        });       
+	    }, 4000);  
 	</script>
 </html>
