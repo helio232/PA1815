@@ -1,3 +1,4 @@
 <?php
-	unlink($_GET['file']);
+	unlink($_GET['photo']);
+	unlink($_GET['thumbnail'])
 ?>

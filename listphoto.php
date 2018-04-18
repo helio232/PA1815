@@ -5,9 +5,9 @@ header('Content-Type: application/json');
 
 $photos = glob("test photo/*.jpg");
 
-// 	usort($photos, function($a, $b) {
-// 	    return filemtime($a) < filemtime($b);
-// 	});
+	// usort($photos, function($a, $b) {
+	//     return filemtime($a) < filemtime($b);
+	// });
 
 $list = array(); //main array
 
@@ -24,11 +24,11 @@ $list = array(); //main array
 
     //echo json_encode($return_array);
     $data = json_encode($return_array);
-    
+
     //output a JSON FILE
     file_put_contents('filelist.json', $data);
     
-    //echo $data;
+    echo $data;
     
 ?>
 

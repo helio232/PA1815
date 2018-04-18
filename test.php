@@ -10,8 +10,7 @@
 	<body>
 		<header>
 		<div class="head">
-			<h1>ParaMed 360</h1>
-
+			<h1>ParaMed 360</h1> 
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
@@ -19,7 +18,6 @@
 					    <a href="deletedphoto.php">Deleted Photos</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
-
 				<div class="menuline"></div>
 				<div class="menuline"></div>
 				<div class="menuline"></div>
@@ -27,8 +25,6 @@
 			</div>
 		</div>
 		</header>
-
-
 
 	<?php
 		// get photo from a directory, format: jpg, gif, png
@@ -42,13 +38,14 @@
     		return filemtime($a) < filemtime($b);
 		});
 
-		//echo images
-		echo '<div class="row">';
+		// usort($thumbnails, function($a, $b) {
+  //   		return filemtime($a) < filemtime($b);
+		// });
+
+
+		// GD library thumbnails
 		for ($i=0; $i < count($photos); $i++){
-			$photo = $photos[$i];
-			$thumbnail = $thumbnails[$i];
-			
-			// GD library thumbnails
+			$photo = $photos[$i];			
 			list($old_width, $old_height) = getimagesize($photo);
 			
 			//$new_width = $old_width * 0.5;
@@ -66,16 +63,22 @@
 			imagejpeg($new_image, 'thumbnails/'.basename($photo),100);
 			imagedestroy($old_image);
 			imagedestroy($new_image);
-			
+		}
+		//when a new photo is added, create a new thumbnail and refresh
+		if (count($thumbnails) != count($photos)){
+			header("Refresh:0");
+		} 
+
+		//echo images
+		echo '<div class="row">';
+		for ($i=0; $i < count($thumbnails); $i++){
+			$thumbnail = $thumbnails[$i];
 			$x=($i+1);
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
-			//echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$photo.'" >';
 			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$thumbnail.'" >';
-			echo '<div class="bottom-left">'.basename($photo).'</div>';
-			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($photo).'\')" />';
+			echo '<div class="bottom-left">'.basename($thumbnail).'</div>';
+			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($thumbnail).'\')" />';
 			echo '</div>';
-																			//"deleteImage(\'' + result.name + '\')" />'
-
 		}
 		echo '</div>';
 
@@ -114,7 +117,8 @@
 		          url: 'delete.php',
 		          data: {'sourcefile' : "<?php echo dirname(__FILE__) . '/test photo/'?>" + file_name  ,
 		          		 'newfile': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name ,
-		          		 'thumbnail':  "<?php echo dirname(__FILE__) . '/thumbnails/'?>" + file_name
+		          		 'sourcethumbnail':  "<?php echo dirname(__FILE__) . '/thumbnails/'?>" + file_name , 
+		          		 'newthumbnail':  "<?php echo dirname(__FILE__) . '/deleted thumbnails/'?>" + file_name
 		          		},
 		          success: function (response) {
 		             // do something
@@ -198,13 +202,11 @@
 		}
 		window.addEventListener("load", init, false);
 
-
 		//Set Interval: Refresh
 	    var previous = null;
 	    var current = null;
 	    setInterval(function() {
 	        $.getJSON("filelist.json", function(json) {
-
 	        	$.ajax({
 			            url: 'listphoto.php',
 			            data: {},
@@ -226,5 +228,6 @@
 
 	        });       
 	    }, 4000);  
+
 	</script>
 </html>

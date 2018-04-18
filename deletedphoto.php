@@ -30,16 +30,18 @@
 		</header>
 <?php
 		$photos = glob("deleted photo/*.jpg");
+		$thumbnails = glob("deleted thumbnails/*.jpg");
 
 		//echo images
 		echo '<div class="row">';
-		for ($i=0; $i < count($photos); $i++){
+		for ($i=0; $i < count($thumbnails); $i++){
 			$photo = $photos[$i];
+			$thumbnail = $thumbnails[$i];
 			$x=($i+1);
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
-			echo '<img class="images" id="img'.$x.'"  onclick="webSocket('.$i.')" src="'.$photo.'" >';
-			echo '<div class="bottom-left">'.basename($photo).'</div>';
-			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($photo).'\')" />';
+			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$thumbnail.'" >';
+			echo '<div class="bottom-left">'.basename($thumbnail).'</div>';
+			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($thumbnail).'\')" />';
 			echo '</div>';
 																			//"deleteImage(\'' + result.name + '\')" />'
 
@@ -77,16 +79,17 @@
 
 		function deleteImage(file_name)
 		{
-		    var r = confirm("Are you sure you want to delete this Image?")
+		    var r = confirm("Are you sure you want to delete this Image permanently?")
 		    if(r == true)
 		    {	
 		    	
 		        $.ajax({
 		          url: 'permdelete.php',
-		          data: {'file': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name },
+		          data: {'photo': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name,
+		          'thumbnail': "<?php echo dirname(__FILE__) . '/deleted thumbnails/'?>" + file_name },
 		          success: function (response) {
 		             // do something
-		             alert("Photo Deleted");
+		             alert("Photo Permanently Deleted");
 		             location.reload();
 		          },
 		          error: function () {
