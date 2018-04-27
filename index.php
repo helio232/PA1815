@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="testcss.css">
+		<link rel="stylesheet" href="index.css">
 		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
 	</head>
 
@@ -15,8 +15,8 @@
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
-					    <a href="test.php">Home</a>
-					    <a href="deletedphoto.php">Deleted Photos</a>
+					    <a href="index.php">Home</a>
+					    <a href="archivedphoto.php">Archived Photos</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 				<div class="menuline"></div>
@@ -29,25 +29,24 @@
 
 	<?php
 		$config = include("config.php");
-		// get photo from a directory
-		$photos = glob("test photo/*.jpg");
-		$thumbnails = glob("thumbnails/*.jpg");
+		$pano_images_library = $config['pano_images_library'];
+		$thumbnails_library = $config['thumbnails_library'];
+		$archived_pano_images_library = $config['archived_pano_images_library'];
+		$archived_thumbnails_library = $config['archived_thumbnails_library'];
 
+		// get photo from a directory
+		$photos = glob($pano_images_library."*.jpg");
+		$thumbnails = glob($thumbnails_library."*.jpg");
 
 		//sort photo according to date modified
 		usort($photos, function($a, $b) {
     		return filemtime($a) < filemtime($b);
 		});
 
-		// usort($thumbnails, function($a, $b) {
-  //   		return filemtime($a) < filemtime($b);
-		// });
-
-
 		// GD library thumbnails
 		for ($i=0; $i < count($photos); $i++){
 			$photo = $photos[$i];	
-			$filename = 'thumbnails/'.basename($photo);
+			$filename = $thumbnails_library.basename($photo);
 			if(!file_exists($filename)){
 				//if thumbnail does not exist, create new one
 				list($old_width, $old_height) = getimagesize($photo);
@@ -61,7 +60,7 @@
 				$old_image = imagecreatefromjpeg($photo);
 
 				imagecopy($new_image,$old_image,0,0,$crop_top,$crop_left,$old_width,$old_height);
-				imagejpeg($new_image, 'thumbnails/'.basename($photo),100);
+				imagejpeg($new_image, $thumbnails_library.basename($photo),100);
 				imagedestroy($old_image);
 				imagedestroy($new_image);
 			}			
@@ -79,7 +78,7 @@
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
 			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$thumbnail.'" >';
 			echo '<div class="bottom-left">'.basename($thumbnail).'</div>';
-			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($thumbnail).'\')" />';
+			echo '<input type="submit" name="archive" class="delBtn" value="archive" onclick="archiveImage(\''.basename($thumbnail).'\')" />';
 			echo '</div>';
 		}
 		echo '</div>';
@@ -91,7 +90,6 @@
 	</body>
 
 <script language="JavaScript">
-
 		// When the user scrolls down 20px from the top of the document, show the button
 		window.onscroll = function() {scrollFunction()};
 
@@ -109,27 +107,27 @@
 		    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 		}
 
-		function deleteImage(file_name)
-		{
-		    var r = confirm("Are you sure you want to delete this Image?")
+		function archiveImage(file_name)
+		{	
+		    var r = confirm("Are you sure you want to archive this Image?")
 		    if(r == true)
 		    {	
 		    	
 		        $.ajax({
-		          url: 'delete.php',
-		          data: {'sourcefile' : "<?php echo dirname(__FILE__) . '/test photo/'?>" + file_name  ,
-		          		 'newfile': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name ,
-		          		 'sourcethumbnail':  "<?php echo dirname(__FILE__) . '/thumbnails/'?>" + file_name , 
-		          		 'newthumbnail':  "<?php echo dirname(__FILE__) . '/deleted thumbnails/'?>" + file_name
+		          url: 'archive.php',
+		          data: {
+		          		'sourcefile' : "<?php echo dirname(__FILE__) . '/'.$pano_images_library.''?>" + file_name  ,
+		          		'newfile': "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name ,
+		          		'sourcethumbnail':  "<?php echo dirname(__FILE__) . '/'.$thumbnails_library.''?>" + file_name , 
+		          		'newthumbnail':  "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name
 		          		},
 		          success: function (response) {
 		             // do something
-		             alert("Photo Deleted");
+		             alert("Photo Archived");
 		             location.reload();
 		          },
 		          error: function () {
 		             // do something
-
 		          }
 		        });
 		        
@@ -159,6 +157,7 @@
 		function init()
 		{
 		    initialiseWebSocket();
+		    refresh();
 		}
 
 		function initialiseWebSocket(){

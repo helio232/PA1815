@@ -2,14 +2,12 @@
 <?php
 
     header('Content-Type: application/json');
+    $config = include("config.php");
+    $pano_images_library = $config['pano_images_library'];
 
-    $photos = glob("test photo/*.jpg");
+    $photos = glob($pano_images_library."*.jpg");
 
-    	// usort($photos, function($a, $b) {
-    	//     return filemtime($a) < filemtime($b);
-    	// });
-
-$list = array(); //main array
+    $list = array(); //main array
 
  	for ($i=0; $i < count($photos); $i++){
  		$photo = $photos[$i];

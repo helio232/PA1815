@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="testcss.css">
+		<link rel="stylesheet" href="index.css">
 		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
 	</head>
 
@@ -15,8 +15,8 @@
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
-					    <a href="test.php">Home</a>
-					    <a href="deletedphoto.php">Deleted Photos</a>
+					    <a href="index.php">Home</a>
+					    <a href="archivedphoto.php">Archived Photos</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 

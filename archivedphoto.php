@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="testcss.css">
+		<link rel="stylesheet" href="index.css">
 		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
 	</head>
 
@@ -15,8 +15,8 @@
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
-					    <a href="test.php">Home</a>
-					    <a href="deletedphoto.php">Deleted Photos</a>
+					    <a href="index.php">Home</a>
+					    <a href="archivedphoto.php">Archived Photos</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 
@@ -29,13 +29,16 @@
 
 		</header>
 <?php
-		$photos = glob("deleted photo/*.jpg");
-		$thumbnails = glob("deleted thumbnails/*.jpg");
+		$config = include("config.php");
+		$archived_pano_images_library = $config['archived_pano_images_library'];
+		$archived_thumbnails_library = $config['archived_thumbnails_library'];
+		//$photos = glob($archived_pano_images_library."*.jpg");
+		$thumbnails = glob($archived_thumbnails_library."*.jpg");
 
-		//echo images
+		//echo thumbnails
 		echo '<div class="row">';
 		for ($i=0; $i < count($thumbnails); $i++){
-			$photo = $photos[$i];
+			//$photo = $photos[$i];
 			$thumbnail = $thumbnails[$i];
 			$x=($i+1);
 			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
@@ -43,20 +46,13 @@
 			echo '<div class="bottom-left">'.basename($thumbnail).'</div>';
 			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($thumbnail).'\')" />';
 			echo '</div>';
-																			//"deleteImage(\'' + result.name + '\')" />'
 
 		}
 		echo '</div>';
 ?>
 
-
-<!-- Delete All photo
- -->
 		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
-
 	</body>
-
-
 
 <script language="JavaScript">
 
@@ -79,17 +75,17 @@
 
 		function deleteImage(file_name)
 		{
-		    var r = confirm("Are you sure you want to delete this Image permanently?")
+		    var r = confirm("Are you sure you want to delete this Image?")
 		    if(r == true)
 		    {	
 		    	
 		        $.ajax({
-		          url: 'permdelete.php',
-		          data: {'photo': "<?php echo dirname(__FILE__) . '/deleted photo/'?>" + file_name,
-		          'thumbnail': "<?php echo dirname(__FILE__) . '/deleted thumbnails/'?>" + file_name },
+		          url: 'delete.php',
+		          data: {'photo': "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name,
+		          'thumbnail': "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name },
 		          success: function (response) {
 		             // do something
-		             alert("Photo Permanently Deleted");
+		             alert("Photo Deleted");
 		             location.reload();
 		          },
 		          error: function () {

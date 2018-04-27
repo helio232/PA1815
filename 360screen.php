@@ -12,8 +12,8 @@
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
-					    <a href="test.php">Home</a>
-					    <a href="deletedphoto.php">Deleted Photos</a>
+					    <a href="index.php">Home</a>
+					    <a href="archivedphoto.php">Archived Photos</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 				<div class="menuline"></div>
@@ -52,7 +52,7 @@
 
 		//WebSocket
 		var wsUri = "<?php echo $config['ws_uri'];?>";
-		var pano_img_library = "<?php echo $config['pano_image_library'];?>";
+		var pano_images_library = "<?php echo $config['pano_images_library'];?>";
 
 		function init()
 		{
@@ -80,7 +80,7 @@
 		function onMessage(evt)
 		{
 		    console.log("Response: " + evt.data);
-		    document.getElementById("image").src = pano_img_library + evt.data;
+		    document.getElementById("image").src = pano_images_library + evt.data;
 		    modal.style.display = "block";
 		    //websocket.close();
 		}
