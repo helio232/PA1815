@@ -31,8 +31,10 @@
 
 
 <?php
-
-
+		$config = include("config.php");
+		foreach($config as $key => $value){
+    		echo $key.": ".$value . "<br>";
+		}
 ?>
 		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
 
