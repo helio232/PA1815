@@ -1,13 +1,13 @@
 
 <?php
 
-header('Content-Type: application/json');
+    header('Content-Type: application/json');
 
-$photos = glob("test photo/*.jpg");
+    $photos = glob("test photo/*.jpg");
 
-	// usort($photos, function($a, $b) {
-	//     return filemtime($a) < filemtime($b);
-	// });
+    	// usort($photos, function($a, $b) {
+    	//     return filemtime($a) < filemtime($b);
+    	// });
 
 $list = array(); //main array
 

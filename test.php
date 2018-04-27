@@ -11,6 +11,7 @@
 		<header>
 		<div class="head">
 			<h1>ParaMed 360</h1> 
+			<img class="refresh" src="src/refresh.png" onclick="refresh()">
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
@@ -27,8 +28,8 @@
 		</header>
 
 	<?php
-		// get photo from a directory, format: jpg, gif, png
-		//$photos = glob("test photo/"."*.{jpg,gif,png}",GLOB_BRACE);
+		$config = include("config.php");
+		// get photo from a directory
 		$photos = glob("test photo/*.jpg");
 		$thumbnails = glob("thumbnails/*.jpg");
 
@@ -45,26 +46,27 @@
 
 		// GD library thumbnails
 		for ($i=0; $i < count($photos); $i++){
-			$photo = $photos[$i];			
-			list($old_width, $old_height) = getimagesize($photo);
-			
-			//$new_width = $old_width * 0.5;
-			//$new_height = $old_height * 0.5;
-			$new_width = 900;
-			$new_height = 250;
+			$photo = $photos[$i];	
+			$filename = 'thumbnails/'.basename($photo);
+			if(!file_exists($filename)){
+				//if thumbnail does not exist, create new one
+				list($old_width, $old_height) = getimagesize($photo);
+				$new_width = $config['thumbnail_width'];
+				$new_height = $config['thumbnail_height'];
 
-			//begin cropping x and y
-		    $crop_top = floor(($old_width - $new_width) / 2);
-		    $crop_left = floor(($old_height - $new_height) / 2);
-			$new_image = imagecreatetruecolor($new_width, $new_height);
-			$old_image = imagecreatefromjpeg($photo);
+				//begin cropping x and y
+			    $crop_top = floor(($old_width - $new_width) / 2);
+			    $crop_left = floor(($old_height - $new_height) / 2);
+				$new_image = imagecreatetruecolor($new_width, $new_height);
+				$old_image = imagecreatefromjpeg($photo);
 
-			imagecopy($new_image,$old_image,0,0,$crop_top,$crop_left,$old_width,$old_height);
-			imagejpeg($new_image, 'thumbnails/'.basename($photo),100);
-			imagedestroy($old_image);
-			imagedestroy($new_image);
+				imagecopy($new_image,$old_image,0,0,$crop_top,$crop_left,$old_width,$old_height);
+				imagejpeg($new_image, 'thumbnails/'.basename($photo),100);
+				imagedestroy($old_image);
+				imagedestroy($new_image);
+			}			
 		}
-		//when a new photo is added, create a new thumbnail and refresh
+		// //when a new photo is added, create a new thumbnail and refresh
 		if (count($thumbnails) != count($photos)){
 			header("Refresh:0");
 		} 
@@ -151,9 +153,8 @@
 		}
 
 
-
 		//WebSocket
-		var wsUri = "wss://echo.websocket.org";
+		var wsUri = "<?php echo $config['ws_uri'];?>";
 
 		function init()
 		{
@@ -183,8 +184,7 @@
 
 		function onMessage(evt)
 		{
-		    //writeToScreen('<span style="color: blue;">RESPONSE: ' + evt.data+'</span>');
-		    console.log("Response: " + evt.data);
+		    console.log("Response: " + evt.data);			   
 		    //websocket.close();
 		}
 
@@ -195,39 +195,41 @@
 		}
 
 		function doSend(evt){
-			var photoSrc = document.getElementsByClassName("images")[evt].src;
-			console.log("Sent: " + photoSrc);
-			websocket.send(photoSrc);
-			
+			// send only the filename
+			var filename = document.getElementsByClassName("images")[evt].src.split('/').pop();
+			console.log("Sent: " + filename);
+			websocket.send(filename);
+						
 		}
 		window.addEventListener("load", init, false);
 
-		//Set Interval: Refresh
-	    var previous = null;
-	    var current = null;
-	    setInterval(function() {
-	        $.getJSON("filelist.json", function(json) {
-	        	$.ajax({
-			            url: 'listphoto.php',
-			            data: {},
-			            success: function (response) {
-			             // do something
-	                    current = JSON.stringify(json);            
-	                    if (previous && current && previous !== current) {
-	                        console.log('refresh');
-	                        location.reload();
-	                    }
-	                    previous = current;
-	                    
-			            },
-			            error: function () {
-			             // do something
-
-			            }
-			        });
-
-	        });       
-	    }, 4000);  
+		var previous;
+		var current;
+		$.getJSON("filelist.json", function(json) {
+			previous = JSON.stringify(json);
+		});
+		
+	 	function refresh(){
+	        $.ajax({
+		        url: 'listphoto.php',
+		        data: {},
+		        success: function (response) {
+			        // do something
+			        $.getJSON("filelist.json", function(json) {         
+	          			current = JSON.stringify(json);    
+	                	if (previous && current && previous !== current) {
+	                    	console.log('refresh');
+	                    	location.reload();
+	                	}
+	                	previous = current;
+	             	}); 
+			    },
+			    error: function () {
+			        // do something
+		            console.log('error');
+			    }
+			});			     
+	 	}
 
 	</script>
 </html>
