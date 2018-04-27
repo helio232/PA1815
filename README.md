@@ -22,7 +22,7 @@ Storing global variables, e.g. file paths.
 ## pano images/
 This dierctory contains JPG photos for the index.php.
 
-## archived images/
+## archived pano images/
 This directory contains JPG photos for the archivedphoto.php
 When a photo is archived on index.php, it moves the photo to the archived pano images folder.
 
@@ -33,7 +33,7 @@ This directory contains the thumbnails.
 This directory contains the archived thumbnails.
 
 ## ws relay/
-relay server
+This directory contains the relay server.
 
 ## src/
 logos
