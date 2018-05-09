@@ -17,6 +17,7 @@
 					<div id="myDropdown" class="dropdown-content">
 					    <a href="index.php">Home</a>
 					    <a href="archivedphoto.php">Archived Photos</a>
+					    <a href="360screen.php">360 Screen</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 
@@ -30,6 +31,8 @@
 		</header>
 <?php
 		$config = include("config.php");
+		$pano_images_library = $config['pano_images_library'];
+		$thumbnails_library = $config['thumbnails_library'];
 		$archived_pano_images_library = $config['archived_pano_images_library'];
 		$archived_thumbnails_library = $config['archived_thumbnails_library'];
 		//$photos = glob($archived_pano_images_library."*.jpg");
@@ -41,10 +44,11 @@
 			//$photo = $photos[$i];
 			$thumbnail = $thumbnails[$i];
 			$x=($i+1);
-			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.')" onmouseout="hidDelBtn('.$i.')">';
+			echo '<div class="imageContainer" onmouseover="disDelBtn('.$i.'); disRecBtn('.$i.'); " onmouseout="hidDelBtn('.$i.'); hidRecBtn('.$i.');" ">';
 			echo '<img class="images" id="img'.$x.'"  onclick="doSend('.$i.')" src="'.$thumbnail.'" >';
 			echo '<div class="bottom-left">'.basename($thumbnail).'</div>';
 			echo '<input type="submit" name="delete" class="delBtn" value="delete" onclick="deleteImage(\''.basename($thumbnail).'\')" />';
+			echo '<input type="submit" name="recover" class="recBtn" value="recover" onclick="recoverImage(\''.basename($thumbnail).'\')" />';
 			echo '</div>';
 
 		}
@@ -108,6 +112,46 @@
 			var delBtn = document.getElementsByClassName("delBtn")[x];
 			delBtn.style.display = "none";
 		}
+
+		function recoverImage(file_name)
+		{	
+		    var r = confirm("Are you sure you want to recover this Image?")
+		    if(r == true)
+		    {	
+		    	
+		        $.ajax({
+		          url: 'recover.php',
+		          data: {
+		          		'sourcefile' : "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name  ,
+		          		'newfile': "<?php echo dirname(__FILE__) . '/'.$pano_images_library.''?>" + file_name ,
+		          		'sourcethumbnail':  "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name , 
+		          		'newthumbnail':  "<?php echo dirname(__FILE__) . '/'.$thumbnails_library.''?>" + file_name
+		          		},
+		          success: function (response) {
+		             // do something
+		             alert("Photo Recovered");
+		             location.reload();
+		          },
+		          error: function () {
+		             // do something
+		          }
+		        });
+		        
+		    }
+		}
+
+				// display delete button
+		function disRecBtn(x) {
+			var recBtn = document.getElementsByClassName("recBtn")[x];
+			recBtn.style.display = "initial";
+		}
+
+		//hide delete button
+		function hidRecBtn(x){
+			var recBtn = document.getElementsByClassName("recBtn")[x];
+			recBtn.style.display = "none";
+		}
+
 
 		function menudropdown(){
 			 document.getElementById("myDropdown").classList.toggle("show");

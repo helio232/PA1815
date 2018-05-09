@@ -11,12 +11,14 @@
 		<header>
 		<div class="head">
 			<h1>ParaMed 360</h1> 
+			<img class="status" id="statusicon" src="src/redicon.png">
 			<img class="refresh" src="src/refresh.png" onclick="refresh()">
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
 					    <a href="index.php">Home</a>
 					    <a href="archivedphoto.php">Archived Photos</a>
+					    <a href="360screen.php">360 Screen</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 				<div class="menuline"></div>
@@ -149,7 +151,21 @@
 		function menudropdown(){
 			 document.getElementById("myDropdown").classList.toggle("show");
 		}
+		
+		// Close the dropdown menu if the user clicks outside of it
+		window.onclick = function(event) {
+		  if (!event.target.matches('.menu')) {
 
+		    var dropdowns = document.getElementsByClassName("dropdown-content");
+		    var i;
+		    for (i = 0; i < dropdowns.length; i++) {
+		      var openDropdown = dropdowns[i];
+		      if (openDropdown.classList.contains('show')) {
+		        openDropdown.classList.remove('show');
+		      }
+		    }
+		  }
+		}
 
 		//WebSocket
 		var wsUri = "<?php echo $config['ws_uri'];?>";
@@ -171,14 +187,13 @@
 
 		function onOpen(evt){
 			console.log("CONNECTED");
-			//writeToScreen("CONNECTED");
-			//doSend("WebSocket");
+			document.getElementById('statusicon').src = "src/greenicon.png";
 		}
 
 		function onClose(evt)
 		{
 			console.log("DISCONNECTED");
-		    //writeToScreen("DISCONNECTED");
+			document.getElementById('statusicon').src = "src/redicon.png";
 		}
 
 		function onMessage(evt)

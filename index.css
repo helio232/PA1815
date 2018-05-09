@@ -1,3 +1,10 @@
+body {
+ margin-top: 0px;
+ margin-right: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px
+}
+
 .row img{
 	margin-top: 10px;
 	vertical-align: middle;
@@ -76,6 +83,26 @@ h1{
     background-color: #555; /* Add a dark-grey background on hover */
 }
 
+.recBtn {
+    display: none;/* Hidden by default */
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    z-index: 99; /* Make sure it does not overlap */
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #009900; /* Set a background color */
+    color: white; /* Text color */
+    cursor: pointer; /* Add a mouse pointer on hover */
+    padding: 15px; /* Some padding */
+    border-radius: 10px; /* Rounded corners */
+    font-size: 1.8vw; /* Increase font size */
+}
+
+.recBtn:hover {
+    background-color: #555; /* Add a dark-grey background on hover */
+}
+
 .menuline{
     width: 4vw;
     height: 0.4vw;
@@ -128,4 +155,15 @@ h1{
     width:2.5vw;
     height:2.5vw;
     cursor: pointer;
+}
+
+.status{
+    position: absolute; 
+    right: 11vw;
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #990033; /* Set a background color */
+    padding: 0.9vw; /* Some padding */
+    width:2.5vw;
+    height:2.5vw;
 }

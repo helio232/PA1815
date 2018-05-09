@@ -9,19 +9,7 @@
 	<header>
 		<div class="head">
 			<h1>ParaMed 360</h1> 
-			<div class="dropdown">
-				<div class="menu" onclick="menudropdown()">
-					<div id="myDropdown" class="dropdown-content">
-					    <a href="index.php">Home</a>
-					    <a href="archivedphoto.php">Archived Photos</a>
-					    <a href="settings.php">Settings</a>
-				  	</div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				</div>
-			</div>
-		</div>
+			<img class="status" id="statusicon" src="src/redicon.png">
 	</header>
 	
 	<body>
@@ -68,20 +56,25 @@
 
 		function onOpen(evt){
 			console.log("CONNECTED");
-			//writeToScreen("CONNECTED");
+			document.getElementById('statusicon').src = "src/greenicon.png";
 		}
 		
 		function onClose(evt)
 		{
 			console.log("DISCONNECTED");
-		    //writeToScreen("DISCONNECTED");
+			document.getElementById('statusicon').src = "src/redicon.png";
 		}
 
 		function onMessage(evt)
 		{
 		    console.log("Response: " + evt.data);
-		    document.getElementById("image").src = pano_images_library + evt.data;
-		    modal.style.display = "block";
+
+		    //if event data is a jpg then display the image?
+		    if (evt.data.split('.').pop() == "jpg"){
+		    	document.getElementById("image").src = pano_images_library + evt.data;
+		    	modal.style.display = "block";
+		    }
+		    
 		    //websocket.close();
 		}
 

@@ -4,6 +4,9 @@
 	<head>
 		<link rel="stylesheet" href="index.css">
 		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
+		<style>
+		
+		</style>
 	</head>
 
 </div>
@@ -11,12 +14,12 @@
 		<header>
 		<div class="head">
 			<h1>ParaMed 360</h1>
-
 			<div class="dropdown">
 				<div class="menu" onclick="menudropdown()">
 					<div id="myDropdown" class="dropdown-content">
 					    <a href="index.php">Home</a>
 					    <a href="archivedphoto.php">Archived Photos</a>
+					    <a href="360screen.php">360 Screen</a>
 					    <a href="settings.php">Settings</a>
 				  	</div>
 
@@ -33,9 +36,10 @@
 <?php
 		$config = include("config.php");
 		foreach($config as $key => $value){
-    		echo $key.": ".$value . "<br>";
+    		echo "<b>".$key.": </b>".$value . "<br>";
 		}
 ?>
+		<!-- 		Clear Thumbnails: -->
 		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
 
 	</body>
