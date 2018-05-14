@@ -9,18 +9,15 @@ Page for the 360 screen. Default display the welcome screen.
 when a pano images is clicked on the index.php, the pano images will then be displayed on 360screen.php.
 
 ## config.php
-Storing global variables, e.g. file path.
+Storing global variables, e.g. file paths.
 
 ## archivedphoto.php
-For viewing and deleting archived pano images.
 
 ## setting.php
 
 ## delete.php
-For deleting pano images & thumbnails. 
 
 ## archive.php
-For archiving pano images & thumbnails. 
 
 ## pano images/
 This dierctory contains JPG photos for the index.php.

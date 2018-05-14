@@ -1,0 +1,76 @@
+body {
+ margin-top: 0px;
+ margin-right: 0px;
+ margin-bottom: 0px;
+ margin-left: 0px;
+}
+
+h3{
+    font-size: 2.5vw;
+    padding-left: 1.5vw;
+}
+
+#image {
+    width:100%;
+}
+
+/* The Modal (background) */
+.modal360 {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content360 {
+    margin: auto;
+    display: block;
+    height:auto;
+    width:100%;
+    height: auto;
+    position: absolute;
+    top: 50%;
+    transform: translateY( -50%);
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.close:hover,
+.close:focus {
+    color: #bbb;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.status{
+    position: relative;
+    right:1.5vw;
+    top:0.2vw;
+    border: none; /* Remove borders */
+    outline: none; /* Remove outline */
+    background-color: #990033; /* Set a background color */
+    width:1.8vw;
+    height:1.8vw;
+}
+
+.nav-wrapper{
+    background-color: #990033;
+    padding-left:1vw;
+    padding-right: 1vw;
+    font-size: 2vw;
+}

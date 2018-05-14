@@ -2,72 +2,62 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="index.css">
-		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
-		<style>
-		
-		</style>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css"rel="stylesheet" href="css/index.css" media="screen,projection"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <style>
+        li {padding-left: 1.5vw;}
+        </style>
 	</head>
 
 </div>
 	<body>
 		<header>
-		<div class="head">
-			<h1>ParaMed 360</h1>
-			<div class="dropdown">
-				<div class="menu" onclick="menudropdown()">
-					<div id="myDropdown" class="dropdown-content">
-					    <a href="index.php">Home</a>
-					    <a href="archivedphoto.php">Archived Photos</a>
-					    <a href="360screen.php">360 Screen</a>
-					    <a href="settings.php">Settings</a>
-				  	</div>
-
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				</div>
-			</div>
-		</div>
-
+			<!-- Dropdown Structure -->
+			<ul id="dropdown1" class="dropdown-content">
+				<li><a href="index.php">Home</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="archivedphoto.php">Archived Photos</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="360screen.php">360 Screen</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="settings.php">Settings</a></li>
+			</ul>
+			<nav>
+				<div class="nav-wrapper">
+			    <a href="index.php" class="brand-logo">ParaMed 360</a>
+			    <ul class="right hide-on-med-and-down">
+			      <!-- Dropdown Trigger -->
+			      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
+			    </ul>
+			  </div>
+			</nav>
 		</header>
 
 
 <?php
 		$config = include("config.php");
+		echo "<ul>";
 		foreach($config as $key => $value){
-    		echo "<b>".$key.": </b>".$value . "<br>";
+    		echo "<li><b>".$key.": </b>".$value . "</li>";
 		}
+		echo "</ul>";
 ?>
-		<!-- 		Clear Thumbnails: -->
-		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
+		<!-- 		Clear Thumbnails:  ???-->
 
+		<!--JavaScript at end of body for optimized loading-->
+    	<script type="text/javascript" src="js/materialize.min.js"></script>
 	</body>
 
 
-<script language="JavaScript">
-
-		// When the user scrolls down 20px from the top of the document, show the button
-		window.onscroll = function() {scrollFunction()};
-
-		function scrollFunction() {
-		    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-		        document.getElementById("topBtn").style.display = "block";
-		    } else {
-		        document.getElementById("topBtn").style.display = "none";
-		    }
-		}
-
-		// When the user clicks on the button, scroll to the top of the document
-		function topFunction() {
-		    document.body.scrollTop = 0; // For Safari
-		    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-		}
-
-		function menudropdown(){
-			 document.getElementById("myDropdown").classList.toggle("show");
-		}		
-
+<script language="JavaScript">		
+		//dropdown menu
+		$(".dropdown-trigger").dropdown();
 </script>
 </html>
 

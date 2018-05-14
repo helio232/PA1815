@@ -2,32 +2,42 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="index.css">
-		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css"rel="stylesheet" href="css/index.css" media="screen,projection"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
 </div>
 	<body>
 		<header>
-		<div class="head">
-			<h1>ParaMed 360</h1>
+			<!-- Dropdown Structure -->
+			<ul id="dropdown1" class="dropdown-content">
+				<li><a href="index.php">Home</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="archivedphoto.php">Archived Photos</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="360screen.php">360 Screen</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="settings.php">Settings</a></li>
+			</ul>
+			<nav>
+				<div class="nav-wrapper">
+			    <a href="index.php" class="brand-logo">ParaMed 360</a>
 
-			<div class="dropdown">
-				<div class="menu" onclick="menudropdown()">
-					<div id="myDropdown" class="dropdown-content">
-					    <a href="index.php">Home</a>
-					    <a href="archivedphoto.php">Archived Photos</a>
-					    <a href="360screen.php">360 Screen</a>
-					    <a href="settings.php">Settings</a>
-				  	</div>
+			    <ul class="right hide-on-med-and-down">
+			    <li><img class="status" id="statusicon" src="src/redicon.png"></li>
+				<li><a href="#"><i class="material-icons" onclick="refresh()">refresh</i></a></li>
 
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				</div>
-			</div>
-		</div>
-
+			      <!-- Dropdown Trigger -->
+			      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
+			    </ul>
+			  </div>
+			</nav>
 		</header>
 <?php
 		$config = include("config.php");
@@ -55,7 +65,15 @@
 		echo '</div>';
 ?>
 
-		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
+		<!--Top button-->
+		<div  class="fixed-action-btn">
+			<a id="topBtn" class="btn-floating btn-large">
+	    		<i class="large material-icons" onclick="topFunction()">expand_less</i>
+	  		</a>
+  		</div>
+
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/materialize.min.js"></script>
 	</body>
 
 <script language="JavaScript">
@@ -113,6 +131,9 @@
 			delBtn.style.display = "none";
 		}
 
+		//dropdown menu
+		$(".dropdown-trigger").dropdown();
+
 		function recoverImage(file_name)
 		{	
 		    var r = confirm("Are you sure you want to recover this Image?")
@@ -152,9 +173,5 @@
 			recBtn.style.display = "none";
 		}
 
-
-		function menudropdown(){
-			 document.getElementById("myDropdown").classList.toggle("show");
-		}
 </script>
 </html>

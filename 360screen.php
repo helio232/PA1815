@@ -2,30 +2,41 @@
 <html>
 	<head>
 		<?php $config = include("config.php"); ?>
-		<link rel="stylesheet" href="360screen.css">
-		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css" rel="stylesheet" href="css/360screen.css" media="screen,projection"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
-	<header>
-		<div class="head">
-			<h1>ParaMed 360</h1> 
-			<img class="status" id="statusicon" src="src/redicon.png">
-	</header>
-	
 	<body>
-		<h2>
-		Welcome to the ParaMed 360 screen! Please select a panoramic photo to display.
-		</h2>
-		<div id="myModal" class="modal">
+		<header>
+			<nav>
+				<div class="nav-wrapper">
+				    <a href="index.php" class="brand-logo">ParaMed 360</a>
+				   	<ul class="right hide-on-med-and-down">
+				    <li><img class="status" id="statusicon" src="src/redicon.png"></li>
+				    </ul>
+			    </div>
+			</nav>
+		</header>
+	
+		<h3>
+			Welcome to the ParaMed 360 screen! Please select a panoramic photo to display.
+		</h3>
+		<div id="myModal" class="modal360">
 			<span class="close"> &times;</span>
-			<img class="modal-content" id="image" src="">
+			<img class="modal-content360" id="image" src="">
 		</div>
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="js/reconnecting-websocket.min.js"></script>
 	</body>
 
-	<script>
-		function menudropdown(){
-			 document.getElementById("myDropdown").classList.toggle("show");
-		}
+<script language="JavaScript">
 		// Get the modal
 		var modal = document.getElementById('myModal');
 
@@ -37,7 +48,6 @@
 		    modal.style.display = "none";
 		}
 
-
 		//WebSocket
 		var wsUri = "<?php echo $config['ws_uri'];?>";
 		var pano_images_library = "<?php echo $config['pano_images_library'];?>";
@@ -48,7 +58,8 @@
 		}
 
 		function initialiseWebSocket(){
-			websocket = new WebSocket(wsUri);
+			//websocket = new WebSocket(wsUri);
+			websocket = new ReconnectingWebSocket(wsUri);
 			websocket.onopen = function(evt){ onOpen(evt) };
 			websocket.onclose = function(evt) { onClose(evt) };
 		    websocket.onmessage = function(evt) { onMessage(evt) };

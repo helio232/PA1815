@@ -2,31 +2,41 @@
 
 <html>
 	<head>
-		<link rel="stylesheet" href="index.css">
-		<script type="text/javascript" src="jquery-3.3.1.min.js" ></script>
+		<script type="text/javascript" src="js/jquery-3.3.1.min.js" ></script>
+		<!--Import Google Icon Font-->
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+         <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+        <link type="text/css"rel="stylesheet" href="css/index.css" media="screen,projection"/>
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 	</head>
 
-</div>
 	<body>
 		<header>
-		<div class="head">
-			<h1>ParaMed 360</h1> 
-			<img class="status" id="statusicon" src="src/redicon.png">
-			<img class="refresh" src="src/refresh.png" onclick="refresh()">
-			<div class="dropdown">
-				<div class="menu" onclick="menudropdown()">
-					<div id="myDropdown" class="dropdown-content">
-					    <a href="index.php">Home</a>
-					    <a href="archivedphoto.php">Archived Photos</a>
-					    <a href="360screen.php">360 Screen</a>
-					    <a href="settings.php">Settings</a>
-				  	</div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				<div class="menuline"></div>
-				</div>
-			</div>
-		</div>
+			<!-- Dropdown Structure -->
+			<ul id="dropdown1" class="dropdown-content">
+				<li><a href="index.php">Home</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="archivedphoto.php">Archived Photos</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="360screen.php">360 Screen</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="settings.php">Settings</a></li>
+			</ul>
+			<nav>
+				<div class="nav-wrapper">
+			    <a href="index.php" class="brand-logo">ParaMed 360</a>
+
+			    <ul class="right hide-on-med-and-down">
+			    <li><img class="status" id="statusicon" src="src/redicon.png"></li>
+				<li><a href="#"><i class="material-icons" onclick="refresh()">refresh</i></a></li>
+
+			      <!-- Dropdown Trigger -->
+			      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
+			    </ul>
+			  </div>
+			</nav>
 		</header>
 
 	<?php
@@ -87,8 +97,15 @@
 
 	?>
 		<!--Top button-->
-		<button onclick="topFunction()" id="topBtn" title="Go to top">Top</button>
+		<div  class="fixed-action-btn">
+			<a id="topBtn" class="btn-floating btn-large">
+	    		<i class="large material-icons" onclick="topFunction()">expand_less</i>
+	  		</a>
+  		</div>
 
+      <!--JavaScript at end of body for optimized loading-->
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+      <script type="text/javascript" src="js/reconnecting-websocket.min.js" ></script>
 	</body>
 
 <script language="JavaScript">
@@ -125,8 +142,11 @@
 		          		},
 		          success: function (response) {
 		             // do something
-		             alert("Photo Archived");
-		             location.reload();
+		             //alert("Photo Archived");
+		             M.toast({html: 'Photo Archived'},3000)
+		             setTimeout(function () {
+				        location.reload()
+				    }, 1000);
 		          },
 		          error: function () {
 		             // do something
@@ -147,25 +167,8 @@
 			var delBtn = document.getElementsByClassName("delBtn")[x];
 			delBtn.style.display = "none";
 		}
-
-		function menudropdown(){
-			 document.getElementById("myDropdown").classList.toggle("show");
-		}
-		
-		// Close the dropdown menu if the user clicks outside of it
-		window.onclick = function(event) {
-		  if (!event.target.matches('.menu')) {
-
-		    var dropdowns = document.getElementsByClassName("dropdown-content");
-		    var i;
-		    for (i = 0; i < dropdowns.length; i++) {
-		      var openDropdown = dropdowns[i];
-		      if (openDropdown.classList.contains('show')) {
-		        openDropdown.classList.remove('show');
-		      }
-		    }
-		  }
-		}
+		//dropdown menu
+		$(".dropdown-trigger").dropdown();
 
 		//WebSocket
 		var wsUri = "<?php echo $config['ws_uri'];?>";
@@ -177,7 +180,8 @@
 		}
 
 		function initialiseWebSocket(){
-			websocket = new WebSocket(wsUri);
+			//websocket = new WebSocket(wsUri);
+			websocket = new ReconnectingWebSocket(wsUri);
 			websocket.onopen = function(evt){ onOpen(evt) };
 			websocket.onclose = function(evt) { onClose(evt) };
 		    websocket.onmessage = function(evt) { onMessage(evt) };
