@@ -31,6 +31,9 @@
 			<span class="close"> &times;</span>
 			<img class="modal-content360" id="image" src="">
 		</div>
+		<div id="myModal2" class="modal360">
+		</div>
+
       <!--JavaScript at end of body for optimized loading-->
       <script type="text/javascript" src="js/materialize.min.js"></script>
       <script type="text/javascript" src="js/reconnecting-websocket.min.js"></script>
@@ -39,6 +42,7 @@
 <script language="JavaScript">
 		// Get the modal
 		var modal = document.getElementById('myModal');
+		var modal2 = document.getElementById('myModal2');
 
 		// Get the <span> element that closes the modal
 		var span = document.getElementsByClassName("close")[0];
@@ -80,15 +84,17 @@
 		{
 		    console.log("Response: " + evt.data);
 
-		    //if event data is a jpg then display the image?
 		    if (evt.data.split('.').pop() == "jpg"){
 		    	document.getElementById("image").src = pano_images_library + evt.data;
-		    	modal.style.display = "block";
+		    	modal.style.display="none";
+		    	modal2.style.display="block";
+		    	setTimeout(function (){
+					modal2.style.display= "none";
+					modal.style.display = "block";
+				}, 300);
 		    }
-		    
 		    //websocket.close();
 		}
-
 		window.addEventListener("load", init, false);
 
 	</script>
