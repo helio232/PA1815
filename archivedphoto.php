@@ -44,6 +44,25 @@
 			  
 		</header>
 
+		<!-- Archive Image Card -->
+		<div id="arcCard"class="row">
+		    <div class="col s12 m12">
+		      	<div class="card small">
+		        	<div class="card-image">
+          				<img id="archiveCardImage"src="">
+          				<span class="card-title white-text" id="cardtext">Card Title</span>
+		          	</div>
+		          		<div class="card-content black-text" id="cardquestion">
+		          		<p>Are you sure you want to delete this image?</p>
+		        	</div>
+			        <div class="card-action">
+			          <a href="#" id="cancelArc" class="left" >Cancel</a>
+			          <a href="#" id="confirmArc" class="right">Confirm</a>
+			        </div>
+		     	</div>
+		    </div>
+		</div>
+
 <?php
 		$config = include("config.php");
 		$pano_images_library = $config['pano_images_library'];
@@ -54,7 +73,7 @@
 		$thumbnails = glob($archived_thumbnails_library."*.jpg");
 
 		//echo thumbnails
-		echo '<div class="row">';
+		echo '<div class="gallery">';
 		for ($i=0; $i < count($thumbnails); $i++){
 			//$photo = $photos[$i];
 			$thumbnail = $thumbnails[$i];
@@ -101,27 +120,35 @@
 		}
 
 		function deleteImage(file_name)
-		{
-		    var r = confirm("Are you sure you want to delete this Image?")
-		    if(r == true)
-		    {	
-		    	
-		        $.ajax({
-		          url: 'delete.php',
-		          data: {'photo': "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name,
-		          'thumbnail': "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name },
-		          success: function (response) {
-		             // do something
-		             alert("Photo Deleted");
-		             location.reload();
-		          },
-		          error: function () {
-		             // do something
+		{	
 
-		          }
+			document.getElementById("archiveCardImage").src = "<?php echo''.$archived_thumbnails_library.''?>" + file_name;
+			document.getElementById("cardtext").innerHTML = "Delete: " + file_name;
+			var arc = document.getElementById("arcCard");
+			arc.style.display = "block";
+
+			$('#confirmArc').click(function() {
+			    $.ajax({
+		        	url: 'delete.php',
+		          	data: {'photo': "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name,
+		          	'thumbnail': "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name },
+		        	success: function (response) {
+		            	// do something
+		            	//alert("Photo Archived");
+		            	M.toast({html: 'Photo Deleted'},3000)
+		            	setTimeout(function () {
+				        	location.reload()
+				    	}, 1000);
+		          	},
+		          	error: function () {
+		            // do something
+		          	}
 		        });
-		        
-		    }
+			 });
+
+			$('#cancelArc').click(function(){
+				arc.style.display = "none";
+			});
 		}
 
 		// display delete button
@@ -143,32 +170,40 @@
 		    var instances = M.Sidenav.init(elems);
 		});
 
-
 		function recoverImage(file_name)
 		{	
-		    var r = confirm("Are you sure you want to recover this Image?")
-		    if(r == true)
-		    {	
-		    	
-		        $.ajax({
-		          url: 'recover.php',
-		          data: {
+			document.getElementById("archiveCardImage").src = "<?php echo''.$archived_thumbnails_library.''?>" + file_name;
+			document.getElementById("cardtext").innerHTML = "Recover: "+ file_name;
+			document.getElementById("cardquestion").innerHTML = "<p>Are you sure you want to recover this image?</p>";
+			var arc = document.getElementById("arcCard");
+			arc.style.display = "block";
+
+			$('#confirmArc').click(function() {
+			    $.ajax({
+		        	url: 'recover.php',
+		         	data: {
 		          		'sourcefile' : "<?php echo dirname(__FILE__) . '/'.$archived_pano_images_library.''?>" + file_name  ,
 		          		'newfile': "<?php echo dirname(__FILE__) . '/'.$pano_images_library.''?>" + file_name ,
 		          		'sourcethumbnail':  "<?php echo dirname(__FILE__) . '/'.$archived_thumbnails_library.''?>" + file_name , 
 		          		'newthumbnail':  "<?php echo dirname(__FILE__) . '/'.$thumbnails_library.''?>" + file_name
 		          		},
-		          success: function (response) {
-		             // do something
-		             alert("Photo Recovered");
-		             location.reload();
-		          },
-		          error: function () {
-		             // do something
-		          }
+		        	success: function (response) {
+		            	// do something
+		            	//alert("Photo Archived");
+		            	M.toast({html: 'Photo Recovered'},3000)
+		            	setTimeout(function () {
+				        	location.reload()
+				    	}, 1000);
+		          	},
+		          	error: function () {
+		            // do something
+		          	}
 		        });
-		        
-		    }
+			 });
+
+			$('#cancelArc').click(function(){
+				arc.style.display = "none";
+			});
 		}
 
 				// display delete button
