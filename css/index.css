@@ -79,14 +79,11 @@ body {
 .show {display:block;}
 
 .status{
-    position: relative;
-    right:1.5vw;
-    top:0.2vw;
-    border: none; /* Remove borders */
-    outline: none; /* Remove outline */
-    background-color: #990033; /* Set a background color */
-    width:1.8vw;
-    height:1.8vw;
+    position:relative;
+    right:20px;
+    top:2px;
+    width:18px;
+    height:18px;
 }
 
 .nav-wrapper{
@@ -101,4 +98,19 @@ body {
   bottom: 5%;
   width:100%;
   text-align: center;
+}
+
+#menu {
+  position: fixed;
+  top: 15px;
+  left: 20px;
+  font-size: 2rem;
+}
+
+.breadcrumb{
+    position: fixed;
+    top: 4px;
+    left: 70px;
+    pointer-events: none;
+    cursor: default;
 }

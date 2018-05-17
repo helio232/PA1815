@@ -14,29 +14,37 @@
 
 	<body>
 		<header>
-			<!-- Dropdown Structure -->
-			<ul id="dropdown1" class="dropdown-content">
-				<li><a href="index.php">Home</a></li>
-			  	<li class="divider"></li>
-			  	<li><a href="archivedphoto.php">Archived Photos</a></li>
-			  	<li class="divider"></li>
-			  	<li><a href="360screen.php">360 Screen</a></li>
-			  	<li class="divider"></li>
-			  	<li><a href="settings.php">Settings</a></li>
-			</ul>
 			<nav>
 				<div class="nav-wrapper">
-			    <a href="index.php" class="brand-logo">ParaMed 360</a>
-
-			    <ul class="right hide-on-med-and-down">
+				<div class="col s12">
+			        <a href="#!" class="breadcrumb">Home</a>
+			    </div>
+			    <a href="index.php" class="brand-logo center">ParaMed 360</a>
+			    <ul class="right">
 			    <li><img class="status" id="statusicon" src="src/redicon.png"></li>
 				<li><a href="#"><i class="material-icons" onclick="refresh()">refresh</i></a></li>
 
-			      <!-- Dropdown Trigger -->
-			      <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">more_vert</i></a></li>
 			    </ul>
 			  </div>
 			</nav>
+
+			  <ul id="slide-out" class="sidenav">
+<!-- 			    <li><div class="user-view">
+			      <div class="background">
+			        <img src="">
+			      </div>
+			      </div></li> -->
+			    <li><a href="index.php"  class='waves-effect'><i class="material-icons">home</i>Home</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="archivedphoto.php" class='waves-effect'><i class="material-icons">archive</i>Archived Photos</a></li>
+			  	<li class="divider"></li>
+			  	<li><a href="360screen.php" class='waves-effect'><i class="material-icons">airplay</i>360 Screen</a></li>
+			  	<li class="divider"></li>
+			  	 <li><a href="settings.php" class='waves-effect'><i class="material-icons">settings</i>Settings</a></li>
+			  </ul>
+			  <a href="#" id="menu" data-target="slide-out" class="sidenav-trigger white-text"><i class="material-icons">menu</i></a>
+
+			  
 		</header>
 
 	<?php
@@ -167,8 +175,13 @@
 			var delBtn = document.getElementsByClassName("delBtn")[x];
 			delBtn.style.display = "none";
 		}
-		//dropdown menu
-		$(".dropdown-trigger").dropdown();
+
+		//initialise sidenav
+		  document.addEventListener('DOMContentLoaded', function() {
+		    var elems = document.querySelectorAll('.sidenav');
+		    var instances = M.Sidenav.init(elems);
+		  });
+
 
 		//WebSocket
 		var wsUri = "<?php echo $config['ws_uri'];?>";
